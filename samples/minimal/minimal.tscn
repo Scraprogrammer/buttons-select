@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://df8oaox7leo4k"]
+
+[ext_resource type="Script" uid="uid://c4cofwt650fe6" path="res://addons/buttons_select/buttons_select.gd" id="1_722pi"]
+[ext_resource type="Script" uid="uid://c7rxqv5jmaviq" path="res://addons/buttons_select/buttons_select_item.gd" id="2_pk64h"]
+
+[sub_resource type="Resource" id="Resource_4gro2"]
+script = ExtResource("2_pk64h")
+id = "OPTION_1"
+text = "Option 1"
+metadata/_custom_type_script = "uid://c7rxqv5jmaviq"
+
+[sub_resource type="Resource" id="Resource_pbyiy"]
+script = ExtResource("2_pk64h")
+id = "OPTION_2"
+text = "Option 2"
+metadata/_custom_type_script = "uid://c7rxqv5jmaviq"
+
+[sub_resource type="Resource" id="Resource_gt570"]
+script = ExtResource("2_pk64h")
+id = "OPTION_3"
+text = "Option 3"
+metadata/_custom_type_script = "uid://c7rxqv5jmaviq"
+
+[node name="ButtonsSelect" type="Button" unique_id=1691982124]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Click"
+script = ExtResource("1_722pi")
+items = Array[ExtResource("2_pk64h")]([SubResource("Resource_4gro2"), SubResource("Resource_pbyiy"), SubResource("Resource_gt570")])
+metadata/_custom_type_script = "uid://c4cofwt650fe6"

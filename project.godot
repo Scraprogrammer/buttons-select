@@ -12,13 +12,15 @@ config_version=5
 
 config/name="buttons-select"
 config/version="0.0.1"
+run/main_scene="uid://df8oaox7leo4k"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [file_customization]
 
 folder_colors={
-"res://addons/": "red"
+"res://addons/": "red",
+"res://samples/": "green"
 }
 
 [physics]

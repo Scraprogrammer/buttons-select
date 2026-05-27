@@ -1,0 +1,9 @@
+{
+  // "godotTools.editorPath.godot4": "TODO: set here or in the VSCode Extension settings",
+  "editor.defaultFormatter": "EddieDover.gdscript-formatter-linter",
+  "editor.formatOnSave": true,
+  "godotFormatterAndLinter.lintSeverityLevel": "Warning",
+  "editor.insertSpaces": false,
+  "editor.tabSize": 2,
+	"editor.detectIndentation": false,
+}

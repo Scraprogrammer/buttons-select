@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://h2quqbjy0kh6"]
+
+[ext_resource type="Script" uid="uid://c4cofwt650fe6" path="res://common/buttons_select/buttons_select.gd" id="1_1ltr6"]
+
+[node name="ButtonsSelect" type="Button" unique_id=30166824]
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 0
+script = ExtResource("1_1ltr6")

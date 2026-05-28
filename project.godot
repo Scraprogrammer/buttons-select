@@ -16,12 +16,21 @@ run/main_scene="uid://df8oaox7leo4k"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+
 [file_customization]
 
 folder_colors={
 "res://addons/": "red",
-"res://samples/": "green"
+"res://samples/": "green",
+"res://tests/": "pink"
 }
+
+[gdunit4]
+
+settings/test/test_lookup_folder="tests"
 
 [physics]
 

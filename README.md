@@ -27,11 +27,6 @@ the ones I personally encountered and which `ButtonsSelect` aims to alleviate ar
 - Add more samples to cover more use cases
 - Add more tests
 - Check what reasonable functionality is missing in `ButtonsSelect` compared to `OptionButton` and consider implementing it.
-- Better handling of `OptionButton` horizontal size when it has an icon.
-	- Depending on the size of the icon that is used for both dropdown and parent buttons, dropdown and parent button size can become misaligned.
-- Better positioning of dropdown under the `OptionButton`
-	- Currently, `align_position` can be called explicitly if e.g. `OptionButton` changes position and dropdowns position must be re-aligned.
-	- Ideally - this should be detected and handled automatically.
 
 ## Credits
 

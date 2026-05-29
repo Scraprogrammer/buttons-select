@@ -24,6 +24,10 @@ signal item_selected(item_id: String)
 ## [/codeblock]
 const SELECTED_ID = "SELECTED_ID"
 
+## A constant name for the shadow button in the buttons container. [br]
+## See [code]update_shadow_button[/code] for more context.
+const SHADOW = "__SHADOW"
+
 ## Metadata that is used to create item buttons. [br]
 ## Buttons are created in [code]_enter_tree[/code].
 @export var items: Array[ButtonsSelectItem]
@@ -62,6 +66,12 @@ const SELECTED_ID = "SELECTED_ID"
 ## Check this if you want the buttons [code]CanvasLayer[/code] to be on [code]layer[/code] 0.
 @export var use_layer_0: bool = false
 
+## If [code]true[/code], buttons layer will have it's position realigned
+## when [code]ButtonsSelect[/code] is pressed. [br]
+## Useful if you expect [code]ButtonsSelect[/code] to be able to change its global position. [br]
+## If [code]ButtonsSelect[/code] is expected to be in same position, it might be better to keep this [code]false[/code].
+@export var realign_buttons_on_press: bool = false
+
 ## A separate [code]CanvasLayer[/code] is added for each rendered [code]ButtonsSelect[/code]
 ## and holds all the item [code]Button[/code] nodes. [br]
 ## This is done to ensure proper positioning of the buttons so they would not interfere with other nodes.
@@ -82,7 +92,9 @@ func _enter_tree() -> void:
 		add_item(item)
 
 	self.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	self.get_tree().root.add_child.call_deferred(layer)
+	var root = self.get_tree().root
+	root.add_child.call_deferred(layer)
+	root.size_changed.connect(on_window_resized)
 	self.pressed.connect(on_buttons_select_pressed)
 
 
@@ -90,6 +102,9 @@ func _enter_tree() -> void:
 ## If focus should be handled - grabs either the [code]ButtonsSelect[/code] focus,
 ## or the focus of the first item [code]Button[/code].
 func on_buttons_select_pressed() -> void:
+	if realign_buttons_on_press:
+		adjust_buttons_alignment()
+
 	if handle_focus:
 		(self if layer.visible else buttons.get_child(0)).grab_focus()
 	layer.visible = !layer.visible
@@ -109,18 +124,22 @@ func initialize_items_layer() -> void:
 	buttons.name = "Buttons"
 	buttons.add_theme_constant_override("separation", items_separation)
 	layer.add_child(buttons)
-	buttons.tree_entered.connect(align_position)
+	buttons.tree_entered.connect(adjust_buttons_alignment)
 
 
 ## When buttons [code]VBoxContainer[/code] enters the tree,
 ## it waits for 1 frame for both it and [code]ButtonsSelect[/code] to be rendered. [br]
 ## Then adjusts its global position to be under the [code]ButtonsSelect[/code]. [br]
 ## Also makes sure that [code]ButtonsSelect[/code] has the same width as the buttons [code]VBoxContainer[/code]
-## to account for different width of based on buttons texts.
-func align_position() -> void:
+## to account for different width of based on buttons texts and icons.
+func adjust_buttons_alignment() -> void:
 	await get_tree().process_frame  # Wait 1 frame for the control to render and have its global_position set.
 	buttons.global_position = self.global_position + Vector2(0, self.size.y + parent_separation)
+
 	self.custom_minimum_size.x = buttons.size.x
+	buttons.custom_minimum_size.x = buttons.size.x
+
+	remove_shadow_button()
 
 
 ## Adds an item [code]Button[/code] to the buttons container.[br]
@@ -133,7 +152,7 @@ func add_item(item: ButtonsSelectItem) -> Button:
 	btn.theme = self.theme
 	btn.material = self.material
 	btn.alignment = self.alignment
-	btn.pressed.connect(select.bind(item.id, false))
+	btn.pressed.connect(select.bind(item.id, true))
 	btn.theme_type_variation = unselected_item_theme_variation
 	buttons.add_child(btn)
 	if inherit_children:
@@ -141,7 +160,44 @@ func add_item(item: ButtonsSelectItem) -> Button:
 			btn.add_child.call_deferred(child.duplicate())
 	if not items.any(func(m) -> bool: return m.id == item.id):
 		items.append(item)
+	update_shadow_button(btn)
 	return btn
+
+
+## Size of the [code]ButtonsSelect[/code] can be different compared to the size of buttons container. [br]
+## - Text can be of smaller width compared to the maximum among the items. [br]
+## - Icon of the [code]ButtonsSelect[/code] can be wider compared to the icon of the buttons. [br]
+## To account for such changes - a shadow button is created in the buttons container
+## with potentially maximum sizing based on the item with the longest text. [br]
+## When [code]adjust_buttons_alignment[/code] is called - the shadow item is removed after it affects the
+## [code]custom_minimum_size[/code] of both [code]ButtonsSelect[/code] and buttons container.
+func update_shadow_button(btn: Button) -> void:
+	# Find an item with the longest text size to be the new shadow
+	var shadow_item: ButtonsSelectItem = null
+	var font := self.get_theme_font("font")
+	for item in items:
+		if !shadow_item or font.get_string_size(tr(item.text)) > font.get_string_size(tr(shadow_item.text)):
+			shadow_item = item
+
+	# Remove the previous shadow
+	remove_shadow_button()
+
+	# Add a new shadow to potentially maximize the size of the buttons container.
+	# Inherit values from self that can affect the buttons size.
+	var new_shadow = btn.duplicate()
+	new_shadow.name = SHADOW
+	new_shadow.icon = self.icon
+	new_shadow.theme_type_variation = self.theme_type_variation
+	new_shadow.text = shadow_item.text
+	buttons.add_child(new_shadow)
+
+
+## Drops the shadow button from the buttons container if it exists.
+func remove_shadow_button() -> void:
+	var shadows = buttons.get_children().filter(func(c) -> bool: return c.name == SHADOW)
+	if not shadows.is_empty():
+		buttons.remove_child(shadows[0])
+		shadows[0].free()
 
 
 ## Selects an item by its ID. [br]
@@ -173,6 +229,8 @@ func select(id: String, send_signal: bool = false) -> void:
 		item_selected.emit(id)
 
 	for item in buttons.get_children():
+		if item.name == SHADOW:
+			continue
 		item.theme_type_variation = (
 			selected_item_theme_variation if item.name == id else unselected_item_theme_variation
 		)
@@ -198,6 +256,14 @@ func remove_all_items() -> void:
 	for button in buttons.get_children():
 		buttons.remove_child(button)
 		button.free()
+
+
+## When a window is resized - buttons layer is hidden. [br]
+## If window resize changed global position of the [code]ButtonsSelect[/code],
+## this helps make repositioning of the buttons layer easier.
+func on_window_resized() -> void:
+	if layer.visible:
+		layer.visible = false
 
 
 # Frees the buttons `CanvasLayer` when parent button exits a scene tree.

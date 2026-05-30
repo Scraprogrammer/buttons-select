@@ -134,10 +134,12 @@ func initialize_items_layer() -> void:
 ## to account for different width of based on buttons texts and icons.
 func adjust_buttons_alignment() -> void:
 	await get_tree().process_frame  # Wait 1 frame for the control to render and have its global_position set.
-	buttons.global_position = self.global_position + Vector2(0, self.size.y + parent_separation)
+	var wider_size := buttons.size if buttons.size.x > self.size.x else self.size
+	self.custom_minimum_size.x = wider_size.x
+	buttons.custom_minimum_size.x = wider_size.x
 
-	self.custom_minimum_size.x = buttons.size.x
-	buttons.custom_minimum_size.x = buttons.size.x
+	await get_tree().process_frame  # Wait 1 frame for the controls size to change after becoming wider
+	buttons.global_position = self.global_position + Vector2(0, self.size.y + parent_separation)
 
 	remove_shadow_button()
 

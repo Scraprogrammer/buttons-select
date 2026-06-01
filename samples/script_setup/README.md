@@ -1,4 +1,4 @@
-## Minimal sample
+## Script Setup sample
 
 - `CanvasLayer` is added to as the root node
 - `CenterContainer` is added as a child and anchors set to fill the screen

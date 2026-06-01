@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://dm03digj4i8sn"]
+
+[ext_resource type="Script" uid="uid://dw3uoccjyd41s" path="res://samples/with_theme/with_theme.gd" id="1_6jahj"]
+[ext_resource type="Theme" uid="uid://cx22ieq1fcnh8" path="res://samples/with_theme/components/sample_theme.tres" id="2_wudkj"]
+[ext_resource type="Script" uid="uid://c4cofwt650fe6" path="res://addons/buttons_select/buttons_select.gd" id="3_eg6hy"]
+
+[node name="WithTheme" type="CanvasLayer" unique_id=2137828027]
+script = ExtResource("1_6jahj")
+
+[node name="Control" type="Control" parent="." unique_id=1049542520]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_wudkj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=178450557]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/VBoxContainer" unique_id=888097156]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer/MarginContainer" unique_id=1180613381]
+layout_mode = 2
+
+[node name="ButtonsSelect" type="Button" parent="Control/VBoxContainer/MarginContainer/HBoxContainer" unique_id=415320814]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ButtonsSelect"
+alignment = 0
+script = ExtResource("3_eg6hy")
+items_separation = -2
+parent_separation = -2
+selected_item_theme_variation = "ButtonsSelectSelected"
+unselected_item_theme_variation = "ButtonsSelectUnselected"
+metadata/_custom_type_script = "uid://c4cofwt650fe6"

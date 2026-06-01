@@ -1,0 +1,95 @@
+[gd_resource type="Theme" format=3 uid="uid://cx22ieq1fcnh8"]
+
+[ext_resource type="Texture2D" uid="uid://cgyddafkud7ua" path="res://samples/with_theme/components/button.png" id="1_xsaub"]
+[ext_resource type="FontFile" uid="uid://dhmjy1bjef4pi" path="res://samples/with_theme/components/public_pixel_font_1_24/public_pixel.ttf" id="5_o7pg8"]
+[ext_resource type="Texture2D" uid="uid://dcs0i65r5d1q3" path="res://samples/with_theme/components/options_arrow.png" id="6_dxeyr"]
+[ext_resource type="Texture2D" uid="uid://djejumgrae1tx" path="res://samples/with_theme/components/radio_checked.png" id="7_2jxyd"]
+[ext_resource type="Texture2D" uid="uid://8ohq33xdo636" path="res://samples/with_theme/components/radio_unchecked.png" id="8_dxeyr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oyp7w"]
+atlas = ExtResource("1_xsaub")
+region = Rect2(4, 4, 56, 56)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ei4cv"]
+texture = SubResource("AtlasTexture_oyp7w")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(0, 0, 56, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ei4cv"]
+atlas = ExtResource("1_xsaub")
+region = Rect2(132, 4, 56, 56)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_psei5"]
+texture = SubResource("AtlasTexture_ei4cv")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(0, 0, 56, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2jxyd"]
+atlas = ExtResource("1_xsaub")
+region = Rect2(132, 4, 56, 56)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dxeyr"]
+texture = SubResource("AtlasTexture_2jxyd")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(0, 0, 56, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yycgc"]
+atlas = ExtResource("1_xsaub")
+region = Rect2(132, 4, 56, 56)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h7aee"]
+texture = SubResource("AtlasTexture_yycgc")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(0, 0, 56, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_looii"]
+atlas = ExtResource("1_xsaub")
+region = Rect2(68, 4, 56, 56)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2jxyd"]
+texture = SubResource("AtlasTexture_looii")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(0, 0, 56, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbve4"]
+atlas = ExtResource("1_xsaub")
+region = Rect2(132, 4, 56, 56)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsaub"]
+texture = SubResource("AtlasTexture_xbve4")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(0, 0, 56, 56)
+
+[resource]
+default_font = ExtResource("5_o7pg8")
+Button/font_sizes/font_size = 16
+Button/styles/disabled = SubResource("StyleBoxTexture_ei4cv")
+Button/styles/focus = SubResource("StyleBoxTexture_psei5")
+Button/styles/hover = SubResource("StyleBoxTexture_dxeyr")
+Button/styles/hover_pressed = SubResource("StyleBoxTexture_h7aee")
+Button/styles/normal = SubResource("StyleBoxTexture_2jxyd")
+Button/styles/pressed = SubResource("StyleBoxTexture_xsaub")
+ButtonsSelect/base_type = &"Button"
+ButtonsSelect/icons/icon = ExtResource("6_dxeyr")
+ButtonsSelectSelected/base_type = &"Button"
+ButtonsSelectSelected/icons/icon = ExtResource("7_2jxyd")
+ButtonsSelectUnselected/base_type = &"Button"
+ButtonsSelectUnselected/icons/icon = ExtResource("8_dxeyr")

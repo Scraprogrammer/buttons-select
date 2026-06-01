@@ -123,6 +123,7 @@ func initialize_items_layer() -> void:
 
 	buttons = VBoxContainer.new()
 	buttons.name = "Buttons"
+	buttons.theme = get_inherited_theme(self)
 	buttons.add_theme_constant_override("separation", items_separation)
 	layer.add_child(buttons)
 	buttons.tree_entered.connect(adjust_buttons_alignment)
@@ -151,7 +152,6 @@ func add_item(item: ButtonsSelectItem) -> Button:
 	btn.name = item.id
 	btn.text = item.text
 	btn.disabled = item.disabled
-	btn.theme = self.theme
 	btn.material = self.material
 	btn.alignment = self.alignment
 	btn.pressed.connect(select.bind(item.id, true))
@@ -285,3 +285,15 @@ func _input(event: InputEvent) -> void:
 		and not buttons.get_global_rect().has_point(event.position)
 	):
 		layer.visible = false
+
+
+## Returns the theme of the [code]ButtonsSelect[/code],
+## or traverses the parents up the tree and gets the first encountered theme.
+func get_inherited_theme(node: Node) -> Theme:
+	if not node or not ("theme" in node):
+		return null
+
+	if node.theme:
+		return node.theme
+
+	return get_inherited_theme(node.get_parent())

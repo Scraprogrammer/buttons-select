@@ -33,3 +33,4 @@ the ones I personally encountered and which `ButtonsSelect` aims to alleviate ar
 - Godot Engine: https://godotengine.org/license/
 - Godot Engine 3rd Party Licenses: [GODOT_COPYRIGHT.txt](GODOT_COPYRIGHT.txt)
 - gdUnit4: https://github.com/godot-gdunit-labs/gdUnit4/blob/master/LICENSE
+- Public Pixel Font: https://ggbot.itch.io/public-pixel-font

@@ -1,5 +1,5 @@
 class_name ScriptSetupTest
-extends GdUnitTestSuite
+extends BaseTest
 @warning_ignore_start("REDUNDANT_AWAIT")
 
 var runner: GdUnitSceneRunner
@@ -17,10 +17,6 @@ func before() -> void:
 	dropdown_3 = parent.dropdowns.get_child(2)
 
 
-func get_center_position(control: Control) -> Vector2:
-	return control.global_position + control.size / 2
-
-
 func test_use_first_dropdown() -> void:
 	# Scene loaded with first option set
 	assert_str(dropdown_1.text).is_equal("Option 1")
@@ -30,7 +26,7 @@ func test_use_first_dropdown() -> void:
 	await runner.await_input_processed()
 
 	# Move over the button and click
-	await runner.simulate_mouse_move_absolute(get_center_position(dropdown_1), 1)
+	await runner.simulate_mouse_move_absolute(get_center_position(dropdown_1), 0.5)
 
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	runner.simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
@@ -43,7 +39,7 @@ func test_use_first_dropdown() -> void:
 
 	# Select option
 	var third_option = dropdown_1.buttons.get_child(2)
-	await runner.simulate_mouse_move_absolute(get_center_position(third_option), 1)
+	await runner.simulate_mouse_move_absolute(get_center_position(third_option), 0.5)
 
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	runner.simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
@@ -63,7 +59,7 @@ func test_use_second_dropdown() -> void:
 	await runner.await_input_processed()
 
 	# Move over the parent and click
-	await runner.simulate_mouse_move_absolute(get_center_position(dropdown_2), 1)
+	await runner.simulate_mouse_move_absolute(get_center_position(dropdown_2), 0.5)
 
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	runner.simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
@@ -76,7 +72,7 @@ func test_use_second_dropdown() -> void:
 
 	# Select option
 	var second_option = dropdown_2.buttons.get_child(1)
-	await runner.simulate_mouse_move_absolute(get_center_position(second_option), 1)
+	await runner.simulate_mouse_move_absolute(get_center_position(second_option), 0.5)
 
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	runner.simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
@@ -96,7 +92,7 @@ func test_use_third_dropdown() -> void:
 	await runner.await_input_processed()
 
 	# Move over the parent and click
-	await runner.simulate_mouse_move_absolute(get_center_position(dropdown_3), 1)
+	await runner.simulate_mouse_move_absolute(get_center_position(dropdown_3), 0.5)
 
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	runner.simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
@@ -109,12 +105,11 @@ func test_use_third_dropdown() -> void:
 
 	# Select option
 	var fifth_option = dropdown_3.buttons.get_child(4)
-	await runner.simulate_mouse_move_absolute(get_center_position(fifth_option), 1)
+	await runner.simulate_mouse_move_absolute(get_center_position(fifth_option), 0.5)
 
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	runner.simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
 	await runner.await_input_processed()
-
 	# Option chosen, dropdown closes
 	assert_str(dropdown_3.text).is_equal("Impossibly Unfair")
 	assert_bool(dropdown_3.layer.visible).is_false()

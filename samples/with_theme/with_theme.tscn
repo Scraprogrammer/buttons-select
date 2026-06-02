@@ -46,3 +46,9 @@ parent_separation = -2
 selected_item_theme_variation = "ButtonsSelectSelected"
 unselected_item_theme_variation = "ButtonsSelectUnselected"
 metadata/_custom_type_script = "uid://c4cofwt650fe6"
+
+[node name="TallControl" type="ColorRect" parent="Control/VBoxContainer/MarginContainer" unique_id=785493048]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8

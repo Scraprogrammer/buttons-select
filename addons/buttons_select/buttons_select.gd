@@ -92,6 +92,7 @@ func _enter_tree() -> void:
 		add_item(item)
 
 	self.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	self.size_flags_vertical = SIZE_SHRINK_CENTER
 	var root = self.get_tree().root
 	root.add_child.call_deferred(layer)
 	root.size_changed.connect(on_window_resized)
@@ -135,6 +136,7 @@ func initialize_items_layer() -> void:
 ## Also makes sure that [code]ButtonsSelect[/code] has the same width as the buttons [code]VBoxContainer[/code]
 ## to account for different width of based on buttons texts and icons.
 func adjust_buttons_alignment() -> void:
+	await get_tree().process_frame  # Wait 1 frame for the control to render and have its global_position set.
 	var wider_size := buttons.size if buttons.size.x > self.size.x else self.size
 	self.custom_minimum_size.x = wider_size.x
 	buttons.custom_minimum_size.x = wider_size.x

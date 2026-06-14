@@ -22,11 +22,11 @@ signal item_selected(item_id: String)
 ## [codeblock]
 ## var id: String = buttons_select.get_meta(buttons_select.SELECTED_ID)
 ## [/codeblock]
-const SELECTED_ID = "SELECTED_ID"
+const SELECTED_ID := "SELECTED_ID"
 
 ## A constant name for the shadow button in the buttons container. [br]
 ## See [code]update_shadow_button[/code] for more context.
-const SHADOW = "__SHADOW"
+const SHADOW := "__SHADOW"
 
 ## Metadata that is used to create item buttons. [br]
 ## Buttons are created in [code]_enter_tree[/code].
@@ -158,12 +158,19 @@ func add_item(item: ButtonsSelectItem) -> Button:
 	btn.alignment = self.alignment
 	btn.pressed.connect(select.bind(item.id, true))
 	btn.theme_type_variation = unselected_item_theme_variation
-	buttons.add_child(btn)
+
 	if inherit_children:
 		for child in self.get_children():
-			btn.add_child.call_deferred(child.duplicate())
-	if not items.any(func(m) -> bool: return m.id == item.id):
+			btn.add_child(child.duplicate())
+
+	if not items.any(func(m: ButtonsSelectItem) -> bool: return m.id == item.id):
 		items.append(item)
+
+	if item.callback:
+		item.callback.call(btn, false)
+
+	buttons.add_child(btn)
+
 	update_shadow_button(btn)
 	return btn
 
@@ -198,7 +205,7 @@ func update_shadow_button(btn: Button) -> void:
 
 ## Drops the shadow button from the buttons container if it exists.
 func remove_shadow_button() -> void:
-	var shadows = buttons.get_children().filter(func(c) -> bool: return c.name == SHADOW)
+	var shadows := buttons.get_children().filter(func(c) -> bool: return c.name == SHADOW)
 	if not shadows.is_empty():
 		buttons.remove_child(shadows[0])
 		shadows[0].free()
@@ -210,9 +217,9 @@ func remove_shadow_button() -> void:
 ## emits the [code]item_selected[/code] signal with the selected item ID,
 ## and hides the buttons layer. [br]
 ## [code]send_signal[/code] is [code]false[/code] by default,
-## since you if this is called explicitly - selected ID should already be known.
+## since if this is called explicitly - selected ID should already be known.
 func select(id: String, send_signal: bool = false) -> void:
-	var selected := items.filter(func(m) -> bool: return m.id == id)
+	var selected: Array[ButtonsSelectItem] = items.filter(func(m) -> bool: return m.id == id)
 
 	if selected.is_empty():
 		push_error("Item with ID '%s' not found for ButtonsSelect '%s'" % [id, self.name])
@@ -222,8 +229,9 @@ func select(id: String, send_signal: bool = false) -> void:
 		push_error("More than 1 item with ID '%s' found for ButtonsSelect '%s'" % [id, self.name])
 		return
 
-	self.text = selected[0].text
-	self.set_meta(SELECTED_ID, selected[0].id)
+	var selected_item := selected[0]
+	self.text = selected_item.text
+	self.set_meta(SELECTED_ID, selected_item.id)
 	layer.visible = false
 
 	if handle_focus:
@@ -232,17 +240,20 @@ func select(id: String, send_signal: bool = false) -> void:
 	if send_signal:
 		item_selected.emit(id)
 
-	for item in buttons.get_children():
-		if item.name == SHADOW:
+	for btn in buttons.get_children():
+		if btn.name == SHADOW:
 			continue
-		item.theme_type_variation = (
-			selected_item_theme_variation if item.name == id else unselected_item_theme_variation
-		)
+
+		var is_selected := btn.name == id
+		btn.theme_type_variation = (selected_item_theme_variation if is_selected else unselected_item_theme_variation)
+
+		if selected_item.callback:
+			selected_item.callback.call(btn, is_selected)
 
 
 ## Removes an item from the buttons container and items array by its ID.
 func remove_item(id: String) -> void:
-	var found = items.filter(func(m) -> bool: return m.id == id)
+	var found := items.filter(func(m) -> bool: return m.id == id)
 	for item in found:
 		items.erase(item)
 

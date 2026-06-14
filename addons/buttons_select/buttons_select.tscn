@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://h2quqbjy0kh6"]
 
-[ext_resource type="Script" uid="uid://c4cofwt650fe6" path="res://common/buttons_select/buttons_select.gd" id="1_1ltr6"]
+[ext_resource type="Script" uid="uid://c4cofwt650fe6" path="res://addons/buttons_select/buttons_select.gd" id="1_1ltr6"]
 
 [node name="ButtonsSelect" type="Button" unique_id=30166824]
 script = ExtResource("1_1ltr6")

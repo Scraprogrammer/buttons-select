@@ -16,8 +16,9 @@ func before() -> void:
 
 
 func test_select_first_option() -> void:
-	# Scene loaded with initial dropdown text set
+	# Scene loaded with initial dropdown values
 	assert_str(dropdown.text).is_equal("Click")
+	assert_str(dropdown.selected_id).is_equal("")
 
 	# Set the mouse outside of control
 	runner.set_mouse_position(Vector2(100, 100))
@@ -45,6 +46,7 @@ func test_select_first_option() -> void:
 
 	# Option chosen, dropdown closes
 	assert_str(dropdown.text).is_equal("Option 1")
+	assert_str(dropdown.selected_id).is_equal("OPTION_1")
 	assert_bool(button_layer.visible).is_false()
 
 
@@ -71,11 +73,15 @@ func test_select_second_option() -> void:
 
 	# Option chosen, dropdown closes
 	assert_str(dropdown.text).is_equal("Option 2")
+	assert_str(dropdown.selected_id).is_equal("OPTION_2")
 	assert_bool(button_layer.visible).is_false()
 
 
 func test_close_by_clicking_outside() -> void:
-	var original_text = dropdown.text
+	# Account for test being launched individually or sequentially.
+	var original_text := dropdown.text
+	var original_id := dropdown.selected_id
+
 	# Open the button again
 	await runner.simulate_mouse_move_absolute(get_center_position(dropdown), 0.5)
 
@@ -97,4 +103,5 @@ func test_close_by_clicking_outside() -> void:
 
 	# Option remains the same, dropdown closes
 	assert_str(dropdown.text).is_equal(original_text)
+	assert_str(dropdown.selected_id).is_equal(original_id)
 	assert_bool(button_layer.visible).is_false()

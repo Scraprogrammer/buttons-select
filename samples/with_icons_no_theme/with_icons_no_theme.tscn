@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dm12388iqoxle" path="res://samples/with_icons_no_theme/with_icons_no_theme.gd" id="1_kp2cr"]
 
-[node name="SetupUsingInit" type="CanvasLayer" unique_id=1057969785]
+[node name="WithIconsNoTheme" type="CanvasLayer" unique_id=1057969785]
 script = ExtResource("1_kp2cr")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1358588639]

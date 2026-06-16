@@ -17,13 +17,6 @@ extends Button
 ## Emitted when an item is selected.
 signal item_selected(item_id: String)
 
-## ID of the selected item can be retrieved by calling [code]get_meta[/code] on the [code]ButtonsSelect[/code].
-## Use this value as the [code]name[/code] parameter.
-## [codeblock]
-## var id: String = buttons_select.get_meta(buttons_select.SELECTED_ID)
-## [/codeblock]
-const SELECTED_ID := "SELECTED_ID"
-
 ## A constant name for the shadow button in the buttons container. [br]
 ## See [code]update_shadow_button[/code] for more context.
 const SHADOW := "__SHADOW"
@@ -31,6 +24,9 @@ const SHADOW := "__SHADOW"
 ## Metadata that is used to create item buttons. [br]
 ## Buttons are created in [code]_enter_tree[/code].
 @export var items: Array[ButtonsSelectItem]
+
+## ID of the currently selected item. If no item is selected - empty string.
+@export var selected_id: String = ""
 
 ## [code]layer[/code] of a separate [code]CanvasLayer[/code] where buttons are created. [br]
 ## If not set - set to 1 layer higher compared to the layer where [code]ButtonsSelect[/code] is located.
@@ -61,7 +57,7 @@ const SHADOW := "__SHADOW"
 ## When an item is selected - [code]ButtonsSelect[/code] focus will be grabbed.
 @export var handle_focus: bool = false
 
-## Because Godot Editor/GDScript currently lacks support for nullable values,
+## Because Godot Editor/GDScript currently lacks support for nullable primitive types,
 ## [code]items_layer[/code] value will default to 0 and will be overwritten by parent layer+1 value. [br]
 ## Check this if you want the buttons [code]CanvasLayer[/code] to be on [code]layer[/code] 0.
 @export var use_layer_0: bool = false
@@ -90,6 +86,9 @@ func _enter_tree() -> void:
 
 	for item in items:
 		add_item(item)
+
+	if selected_id:
+		select(selected_id)
 
 	self.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	self.size_flags_vertical = SIZE_SHRINK_CENTER
@@ -231,7 +230,7 @@ func select(id: String, send_signal: bool = false) -> void:
 
 	var selected_item := selected[0]
 	self.text = selected_item.text
-	self.set_meta(SELECTED_ID, selected_item.id)
+	self.selected_id = selected_item.id
 	layer.visible = false
 
 	if handle_focus:

@@ -94,9 +94,13 @@ func _enter_tree() -> void:
 	self.size_flags_vertical = SIZE_SHRINK_CENTER
 	var root = self.get_tree().root
 	root.add_child.call_deferred(layer)
-	root.size_changed.connect(on_window_resized)
-	self.pressed.connect(on_buttons_select_pressed)
-	self.resized.connect(adjust_buttons_alignment)
+
+	if not root.size_changed.is_connected(on_window_resized):
+		root.size_changed.connect(on_window_resized)
+	if not self.pressed.is_connected(on_buttons_select_pressed):
+		self.pressed.connect(on_buttons_select_pressed)
+	if not self.resized.is_connected(adjust_buttons_alignment):
+		self.resized.connect(adjust_buttons_alignment)
 
 
 ## Shows or hides the buttons [code]CanvasLayer[/code]. [br]
